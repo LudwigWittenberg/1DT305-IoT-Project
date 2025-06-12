@@ -9,9 +9,8 @@ class DHTSensor:
     self.sensor = DHT11(Pin(pin))
 
   # returns the temperature and the humidity
-  def get_values(self):
+  def get_temp(self):
     self.sensor.measure()
     temperature = self.sensor.temperature()
-    humidity = self.sensor.humidity()
     
-    return { temperature, humidity }
+    return temperature
