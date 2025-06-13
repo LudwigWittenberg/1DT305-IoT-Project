@@ -11,7 +11,6 @@ class IrReciver:
   # Returns the ir code
   def callback(self, data, addr, ctrl):
     if data > 0:
-      # print(data)
       self.last_code = data
       return data
   

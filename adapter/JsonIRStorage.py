@@ -20,7 +20,6 @@ class JsonIRStorage:
         code = IRCode(key, value['code'])
         codes.append(code)
               
-      print(codes)
       return codes
     return []
   
@@ -40,13 +39,14 @@ class JsonIRStorage:
   # Get akk codes
   def get_all_codes(self):
     # Lista alla filer och mappar i rotkatalogen
-    print(os.listdir('/'))
-    with open('ir_codes.json', 'r') as file:
-      content = file.read()
-      print(content)
     return self.data
 
   # Just for testing
   def delete(self):
-    os.remove('ir_codes.json')
-    print(f"Filen {'ir_codes.json'} har raderats. HHHHHHHH")
+    # print(os.listdir('/'))
+    # with open('ir_codes.json', 'r') as file:
+    #   content = file.read()
+    #   print(content)
+    # os.remove('ir_codes.json')
+    # print(f"Filen {'ir_codes.json'} har raderats. HHHHHHHH")
+    pass

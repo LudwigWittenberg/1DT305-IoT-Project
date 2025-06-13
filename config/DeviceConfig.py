@@ -1,6 +1,7 @@
 from time import sleep
 from adapter.JsonIRStorage import JsonIRStorage
 from lib.IrReciver import IrReciver
+from lib.Led import Led
 
 # ---------- ALL CODES ----------
 keys = [
@@ -11,18 +12,24 @@ keys = [
 ]
 # -------------------------------
 
-class Config:
-  def __init__(self, irReciver: IrReciver):
+class DeviceConfig:
+  def __init__(self, irReciver: IrReciver, yelloLedPin: int, greenLedPin: int):
     self.jsonFile = JsonIRStorage()
     self.irReciver = irReciver
+    self.yellowLed = Led(yelloLedPin)
+    self.greenLed = Led(greenLedPin)
     
   def is_configured(self):
     return len(self.jsonFile.get_all_codes()) > 0
   
   # Start the setup process
   def start_setup_process(self):
+    self.toggle_Led('yellow')
     for key in keys:
       self.set_code(key, self.get_code())
+      self.toggle_Led('yellow')
+    
+    self.toggle_Led('complete')
   
   # Saves each code to it corresponding key
   def set_code(self, key, code):
@@ -38,6 +45,8 @@ class Config:
       if self.is_input_valid(input):
         print('Added value:', input)
         valid_input = False
+        self.toggle_Led('green')
+        sleep(2)
         return input
     
   # Wait for input from the user
@@ -48,3 +57,20 @@ class Config:
   
   def is_input_valid(self, input):
     return not input == None
+  
+  # Toggles all the led to get a visuall over the process
+  def toggle_Led(self, value):
+    if value == 'green':
+      self.greenLed.on()
+      self.yellowLed.off()
+    elif value == 'complete':
+      self.greenLed.off()
+      self.yellowLed.off()
+      for i in range(5):
+        self.greenLed.on()
+        sleep(0.5)
+        self.greenLed.off()
+        sleep(0.5)
+    else: 
+      self.greenLed.off()
+      self.yellowLed.on()
