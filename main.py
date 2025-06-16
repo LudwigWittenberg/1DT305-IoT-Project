@@ -6,6 +6,8 @@ from services.TemperatureService import TemperatureService
 from lib.IrReciver import IrReciver
 from adapter.JsonIRStorage  import JsonIRStorage
 from config.DeviceConfig import DeviceConfig
+from lib.System import System
+from lib.Led import Led
 # --------------------------------
 
 # ------------- PINS -------------
@@ -22,9 +24,14 @@ MAX_TEMP = 25
 
 # ------------- INIT -------------
 picoLed = PicoLed()
-ir = IrReciver(IrReciverPin)
+yellowLed = Led(yellowLedPin)
+greenLed = Led(greenLedPin)
+redLed = Led(redLedPin)
+ir = IrReciver(IrReciverPin, yellowLed)
 irCodes = JsonIRStorage()
-device = DeviceConfig(ir, yellowLedPin, greenLedPin)
+device = DeviceConfig(ir, yellowLed, greenLed)
+temperatureService = TemperatureService(dhtSensorPin, greenLed, redLed, MAX_TEMP)
+system = System(yellowLed, greenLed, redLed)
 # --------------------------------
 
 # ------------- START -------------
@@ -36,16 +43,26 @@ if not device.is_configured():
   # Make sure the config is in place
   sleep(2)
 
-
 # -------------- TESTING ------------------------
 # Can be removed
 
-temperatureService = TemperatureService(dhtSensorPin, greenLedPin, redLedPin, MAX_TEMP)
-
 while True:
-  picoLed.blink()
-
-  temperatureService.check_temp()
+  irCode = ir.get_last_code()
+  
+  # Check if we have an ir code and if check what action it should do.
+  if irCode:
+    print(irCode)
+    system.set_system_status(irCode)
+      
+  
+  if system.get_system_status():
+    picoLed.blink()
+  
+    temperatureService.check_temp()
+    
+  elif not system.get_system_status():
+    pass
 
   # stop infinit loop
   sleep_ms(500)
+  

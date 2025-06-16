@@ -1,7 +1,7 @@
 from time import sleep
 from adapter.JsonIRStorage import JsonIRStorage
 from lib.IrReciver import IrReciver
-from lib.Led import Led
+from utils.Timer import Timer
 
 # ---------- ALL CODES ----------
 keys = [
@@ -13,11 +13,12 @@ keys = [
 # -------------------------------
 
 class DeviceConfig:
-  def __init__(self, irReciver: IrReciver, yelloLedPin: int, greenLedPin: int):
+  def __init__(self, irReciver: IrReciver, yelloLed, greenLed):
     self.jsonFile = JsonIRStorage()
     self.irReciver = irReciver
-    self.yellowLed = Led(yelloLedPin)
-    self.greenLed = Led(greenLedPin)
+    self.yellowLed = yelloLed
+    self.greenLed = greenLed
+    self.timer = Timer()
     
   def is_configured(self):
     return len(self.jsonFile.get_all_codes()) > 0
@@ -74,3 +75,4 @@ class DeviceConfig:
     else: 
       self.greenLed.off()
       self.yellowLed.on()
+      

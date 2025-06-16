@@ -40,13 +40,13 @@ class JsonIRStorage:
   def get_all_codes(self):
     # Lista alla filer och mappar i rotkatalogen
     return self.data
+  
+  def get_code(self, name: str):
+    for code in self.data:
+      if code.get_key() == name:
+        return code
 
-  # Just for testing
-  def delete(self):
-    # print(os.listdir('/'))
-    # with open('ir_codes.json', 'r') as file:
-    #   content = file.read()
-    #   print(content)
-    # os.remove('ir_codes.json')
-    # print(f"Filen {'ir_codes.json'} har raderats. HHHHHHHH")
-    pass
+  # Resets the binds
+  def reset_binds(self):
+    self.data = []
+    self.save()

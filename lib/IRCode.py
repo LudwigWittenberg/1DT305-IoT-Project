@@ -5,6 +5,9 @@ class IRCode:
 
   def get_code(self):
     return self.code
+  
+  def get_key(self):
+    return self.key
 
   def get_type(self):
     return self.key
