@@ -17,6 +17,7 @@ greenLedPin = 15
 redLedPin = 14
 irReciverPin = 19
 irTransmitterPin = 20
+photoPin = 28
 # --------------------------------
 
 # ----------- MAX_TEMP -----------
@@ -31,7 +32,7 @@ redLed = Led(redLedPin)
 ir = RawIRRecorder(irReciverPin)
 device = DeviceConfig(ir, yellowLed, greenLed)
 temperatureService = TemperatureService(dhtSensorPin, greenLed, redLed, MAX_TEMP, irTransmitterPin)
-system = System(yellowLed, greenLed, redLed, ir)
+system = System(yellowLed, greenLed, redLed, ir, photoPin)
 # --------------------------------
 
 # ------------- START -------------
@@ -46,7 +47,8 @@ if not device.is_configured():
 # -------------- TESTING ------------------------
 # Can be removed
 
-while True:        
+while True:
+  system.check_system_status()
   if system.get_system_status():
     picoLed.blink()
     temperatureService.check_temp()

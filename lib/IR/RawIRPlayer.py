@@ -2,6 +2,7 @@ from machine import Pin, PWM
 import time
 import ujson
 
+# IR transmitter module
 class RawIRPlayer:
   def __init__(self, transmitter_pin, filename="ir_codes.json", scaling=1.0):
     self.transmitter_pin = transmitter_pin
@@ -13,6 +14,7 @@ class RawIRPlayer:
     self.pwm.freq(38000)
     self.pwm.duty_u16(0)
 
+  # Plays the IR signal
   def play(self, code_name):
     with open(self.filename, "r") as f:
       self.data = ujson.load(f)

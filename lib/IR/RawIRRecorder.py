@@ -2,6 +2,7 @@ from machine import Pin
 import time
 import ujson
 
+# IR Reciver module
 class RawIRRecorder:
   def __init__(self, receiver_pin, filename="ir_codes.json"):
     self.receiver_pin = receiver_pin
@@ -11,13 +12,14 @@ class RawIRRecorder:
     self.last_call = None
     self.load()
 
+  # Records the IR signal and saves it to .json file
   def record(self, code_name):
-    print(f"Väntar på signal för '{code_name}'...")
+    print(f"Waiting for signal '{code_name}'...")
     raw = self._capture_raw()
-    print(f"Signal mottagen, längd: {len(raw)} pulser")
     self.data[code_name] = raw
     self._save()
 
+  # Capture the ir signal
   def _capture_raw(self):
     raw = []
     last = self.ir_pin.value()
@@ -36,30 +38,24 @@ class RawIRRecorder:
       
     return raw
 
+  # Saves the ir signal to the .json file
   def _save(self):
     try:
       with open(self.filename, "w") as f:
         ujson.dump(self.data, f)
         f.flush()
-      print(f"Signal sparad i {self.filename}")
+      print(f"Signal saved in {self.filename}")
     except Exception as e:
-      print("Kunde inte spara:", e)
-        
+      print("Could not save: ", e)
+   
+  # Loads the already configured codes in to the system.     
   def load(self):
     with open(self.filename, "r") as f:
       self.data = ujson.load(f)
-        
+  
   def get_length(self):
     return len(self.data)
   
+  # Returns all the loaded signals
   def get_all_signals(self):
-    print(self.data)
     return self.data
-  
-  def get_last_call(self):
-    call = self._capture_raw()
-    
-    return call
-  
-  def listen_for_call(self):
-    pass

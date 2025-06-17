@@ -10,14 +10,12 @@ class TemperatureService:
     self.MAX_TEMP = maxTemp
     self.ir_transmitter = RawIRPlayer(irTransmitterPin)
     self.over_limit = False
-    
+  
+  # Get the temp from the DHT11 Sensor and decides what action to take.
   def check_temp(self):
     temp = self.dhtSensor.get_temp()
     
-    print(temp)
-    
     if temp >= self.MAX_TEMP:
-      print('dwadaw')
       self.greenLed.off()
       self.redLed.on()
       
@@ -29,9 +27,9 @@ class TemperatureService:
       self.redLed.off()
       
       if self.over_limit:
-        print('Hdawdad')
         self.ir_transmitter.play("AC_OFF")
         self.over_limit = False
-      
+
+  # Returns the max temp.
   def get_max_temp(self):
     return self.MAX_TEMP
