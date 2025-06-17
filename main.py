@@ -1,5 +1,6 @@
 from time import sleep_ms, sleep
 
+
 # ------------ IMPORTS -----------
 from lib.PicoLed import PicoLed
 from services.TemperatureService import TemperatureService
@@ -10,19 +11,28 @@ from lib.Led import Led
 from lib.PIEZO.Piezo import Piezo
 # --------------------------------
 
+# ---------- LOAD_CONFIG ---------
+from config.PinConfig import *
+from config.ValueConfig import *
+# --------------------------------
+
 # ------------- PINS -------------
-dhtSensorPin = 16
-yellowLedPin = 13
-greenLedPin = 15
-redLedPin = 14
-irReciverPin = 19
-irTransmitterPin = 20
-photoPin = 28
-piezoPin = 27
+dhtSensorPin = DHT_SENSOR_PIN or 16
+yellowLedPin = YELLOW_LED_PIN or 13
+greenLedPin = GREEN_LED_PIN or 15
+redLedPin = RED_LED_PIN or 14
+irReciverPin = IR_RECIVER_PIN or 19
+irTransmitterPin = IR_TRANSMITTER_PIN or  20
+photoPin = PHOTO_PIN or 28
+piezoPin = PIEZO_PIN or 27
 # --------------------------------
 
 # ----------- MAX_TEMP -----------
-MAX_TEMP = 25
+MAX_TEMP = MAX_TEMP or 25
+# --------------------------------
+
+# -------- DARKNESS_LEVEL --------
+DARKNESS_LEVEL = DARKNESS_LEVEL or 70
 # --------------------------------
 
 # ------------- INIT -------------
@@ -56,5 +66,5 @@ def run():
     # stop infinit loop
     sleep_ms(500)
 
-run()  
+# run()  
   
