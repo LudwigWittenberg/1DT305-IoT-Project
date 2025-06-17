@@ -22,6 +22,7 @@ class ConnectWifi:
       wlan.connect(WIFI_SSID, WIFI_PASS)  # Your WiFi Credential
       print('Waiting for connection...', end='')
       # Check if it is connected otherwise wait
+      print(wlan.status())
       while not wlan.isconnected() and wlan.status() >= 0:
         print('.', end='')
         sleep(1)
