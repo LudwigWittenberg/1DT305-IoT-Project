@@ -2,7 +2,7 @@ from lib.PhotoResistor import PhotoResistor
 from lib.PIEZO.PiezoSongs import start_signal, end_signal
 
 class System:
-  def __init__(self, yellowLed, greenLed, redLed, irReciver, photoPin, piezo):
+  def __init__(self, yellowLed, greenLed, redLed, irReciver, photoPin, piezo, darkness_level):
     self.system_status = True
     self.yellowLed = yellowLed
     self.greenLed = greenLed
@@ -10,6 +10,7 @@ class System:
     self.ir = irReciver
     self.photo = PhotoResistor(photoPin)
     self.piezo = piezo
+    self.darkness_level = darkness_level
     
   # Sets the status of the system (on/off)
   def check_system_status(self):
@@ -20,7 +21,7 @@ class System:
   
   # Set the action of the darknes level
   def set_system_status(self, darkness):
-    if darkness >= 70 and self.system_status:
+    if darkness >= self.darkness_level and self.system_status:
       self.system_offline()
     elif not self.system_status: 
       self.system_online()

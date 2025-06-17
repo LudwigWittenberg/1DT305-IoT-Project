@@ -1,5 +1,4 @@
 from machine import Pin, PWM
-import time
 import ujson
 
 # IR transmitter module
@@ -19,12 +18,8 @@ class RawIRPlayer:
     with open(self.filename, "r") as f:
       self.data = ujson.load(f)
       if code_name not in self.data:
-        print(f"Hittar ej koden '{code_name}'")
+        print(f"Cant find the code: '{code_name}'")
         return
       raw = self.data[code_name]
 
     raw = raw[1:]  # Ignorera startvärdet
-
-    print(f"Spelar '{code_name}'")
-
-    print("Playback klar")

@@ -1,5 +1,4 @@
-from time import sleep_ms, sleep
-
+from time import sleep
 
 # ------------ IMPORTS -----------
 from lib.PicoLed import PicoLed
@@ -28,11 +27,11 @@ piezoPin = PIEZO_PIN or 27
 # --------------------------------
 
 # ----------- MAX_TEMP -----------
-MAX_TEMP = MAX_TEMP or 25
+max_temp = MAX_TEMP or 25
 # --------------------------------
 
 # -------- DARKNESS_LEVEL --------
-DARKNESS_LEVEL = DARKNESS_LEVEL or 70
+darkness_level = DARKNESS_LEVEL or 70
 # --------------------------------
 
 # ------------- INIT -------------
@@ -43,8 +42,8 @@ redLed = Led(redLedPin)
 piezo = Piezo(piezoPin)
 ir = RawIRRecorder(irReciverPin)
 device = DeviceConfig(ir, yellowLed, greenLed)
-temperatureService = TemperatureService(dhtSensorPin, greenLed, redLed, MAX_TEMP, irTransmitterPin, piezo)
-system = System(yellowLed, greenLed, redLed, ir, photoPin, piezo)
+temperatureService = TemperatureService(dhtSensorPin, greenLed, redLed, max_temp, irTransmitterPin, piezo)
+system = System(yellowLed, greenLed, redLed, ir, photoPin, piezo, darkness_level)
 # --------------------------------
 
 # ------------- SETUP -------------
@@ -64,7 +63,7 @@ def run():
       temperatureService.check_temp()
 
     # stop infinit loop
-    sleep_ms(500)
+    sleep(1)
 
-# run()  
+run()
   
