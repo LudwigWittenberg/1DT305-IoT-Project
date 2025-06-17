@@ -1,4 +1,3 @@
-import asyncio
 from time import sleep_ms, sleep
 
 # ------------ IMPORTS -----------
@@ -8,6 +7,7 @@ from lib.IR.RawIRRecorder import RawIRRecorder
 from config.DeviceConfig import DeviceConfig
 from lib.System import System
 from lib.Led import Led
+from lib.PIEZO.Piezo import Piezo
 # --------------------------------
 
 # ------------- PINS -------------
@@ -18,6 +18,7 @@ redLedPin = 14
 irReciverPin = 19
 irTransmitterPin = 20
 photoPin = 28
+piezoPin = 27
 # --------------------------------
 
 # ----------- MAX_TEMP -----------
@@ -29,13 +30,14 @@ picoLed = PicoLed()
 yellowLed = Led(yellowLedPin)
 greenLed = Led(greenLedPin)
 redLed = Led(redLedPin)
+piezo = Piezo(piezoPin)
 ir = RawIRRecorder(irReciverPin)
 device = DeviceConfig(ir, yellowLed, greenLed)
-temperatureService = TemperatureService(dhtSensorPin, greenLed, redLed, MAX_TEMP, irTransmitterPin)
-system = System(yellowLed, greenLed, redLed, ir, photoPin)
+temperatureService = TemperatureService(dhtSensorPin, greenLed, redLed, MAX_TEMP, irTransmitterPin, piezo)
+system = System(yellowLed, greenLed, redLed, ir, photoPin, piezo)
 # --------------------------------
 
-# ------------- START -------------
+# ------------- SETUP -------------
 # First we need to set up a config for the device
 if not device.is_configured():
   print('--------- Setup Started ---------')
@@ -44,21 +46,15 @@ if not device.is_configured():
   # Make sure the config is in place
   sleep(2)
 
-# -------------- TESTING ------------------------
-# Can be removed
+# ------------- START -------------
+def run():
+  while True:
+    system.check_system_status()
+    if system.get_system_status():
+      temperatureService.check_temp()
 
-while True:
-  system.check_system_status()
-  if system.get_system_status():
-    picoLed.blink()
-    temperatureService.check_temp()
-    
-    print('System PÅ')
-    
-  elif not system.get_system_status():
-    print('System AV')
+    # stop infinit loop
+    sleep_ms(500)
 
-  # stop infinit loop
-  sleep_ms(500)
-  
+run()  
   
