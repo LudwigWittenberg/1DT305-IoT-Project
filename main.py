@@ -1,10 +1,10 @@
+import asyncio
 from time import sleep_ms, sleep
 
 # ------------ IMPORTS -----------
 from lib.PicoLed import PicoLed
 from services.TemperatureService import TemperatureService
-from lib.IrReciver import IrReciver
-from adapter.JsonIRStorage  import JsonIRStorage
+from lib.IR.RawIRRecorder import RawIRRecorder
 from config.DeviceConfig import DeviceConfig
 from lib.System import System
 from lib.Led import Led
@@ -15,7 +15,8 @@ dhtSensorPin = 16
 yellowLedPin = 13
 greenLedPin = 15
 redLedPin = 14
-IrReciverPin = 19
+irReciverPin = 19
+irTransmitterPin = 20
 # --------------------------------
 
 # ----------- MAX_TEMP -----------
@@ -27,11 +28,10 @@ picoLed = PicoLed()
 yellowLed = Led(yellowLedPin)
 greenLed = Led(greenLedPin)
 redLed = Led(redLedPin)
-ir = IrReciver(IrReciverPin, yellowLed)
-irCodes = JsonIRStorage()
+ir = RawIRRecorder(irReciverPin)
 device = DeviceConfig(ir, yellowLed, greenLed)
-temperatureService = TemperatureService(dhtSensorPin, greenLed, redLed, MAX_TEMP)
-system = System(yellowLed, greenLed, redLed)
+temperatureService = TemperatureService(dhtSensorPin, greenLed, redLed, MAX_TEMP, irTransmitterPin)
+system = System(yellowLed, greenLed, redLed, ir)
 # --------------------------------
 
 # ------------- START -------------
@@ -46,23 +46,17 @@ if not device.is_configured():
 # -------------- TESTING ------------------------
 # Can be removed
 
-while True:
-  irCode = ir.get_last_code()
-  
-  # Check if we have an ir code and if check what action it should do.
-  if irCode:
-    print(irCode)
-    system.set_system_status(irCode)
-      
-  
+while True:        
   if system.get_system_status():
     picoLed.blink()
-  
     temperatureService.check_temp()
     
+    print('System PÅ')
+    
   elif not system.get_system_status():
-    pass
+    print('System AV')
 
   # stop infinit loop
   sleep_ms(500)
+  
   

@@ -1,6 +1,5 @@
 from dht import DHT11
 from machine import Pin
-import time
 
 # Class for talking to DHT11 sensor
 class DHTSensor:
