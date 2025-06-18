@@ -11,6 +11,8 @@ class PhotoResistor:
     light = self.photo.read_u16()
     darkness = round(light / 65535 * 100, 2)
     
+    print('Darkness: ', darkness, 'lux')
+    
     self.darkness = darkness
   
   # Returns the darkness level

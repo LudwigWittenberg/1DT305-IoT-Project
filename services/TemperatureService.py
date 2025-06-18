@@ -17,7 +17,7 @@ class TemperatureService:
   def check_temp(self):
     self.dhtSensor.measure()
     temp = self.dhtSensor.get_temp()
-    print(temp)
+    print('Temperature: ', temp, '°C')
     
     if temp >= self.MAX_TEMP:
       self.greenLed.off()
@@ -26,7 +26,6 @@ class TemperatureService:
       if not self.over_limit:
         self.piezo.playsong(high_temp_song)
         self.ir_transmitter.play("AC_ON")
-        print('AC PÅ')
         self.over_limit = True
         self.ac_status = True
     else:
