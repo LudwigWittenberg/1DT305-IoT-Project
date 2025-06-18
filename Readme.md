@@ -4,6 +4,8 @@
 | ---- | ---------- |
 | Ludwig Wittenberg | lw223cq |
 
+![Smart Climate Control System](./assets/readme/schema.png)
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -46,7 +48,9 @@ I’ve always found it uncomfortable when a room gets too hot, and I’ve also h
 
 This project is part of the [1DT305 IoT Project course at LNU](https://lnu.se/kurs/tillampad-internet-of-things-introduktion/distans-internationell-engelska-sommar/), where students are required to design and implement an IoT solution that addresses a real-world problem. The project involves using various sensors, microcontrollers, and software tools to create a functional IoT device.
 
-![Smart Climate Control System](./assets/readme/smart-climate-control-system.png)
+<p align="center">
+  <img src="https://lnu.se/api/media/38468-w698h393cy94cw698ch218" alt="Smart Climate Control System">
+</p>
 
 ## Materials
 
