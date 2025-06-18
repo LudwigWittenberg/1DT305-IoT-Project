@@ -30,6 +30,7 @@ class ConnectWifi:
     ip = wlan.ifconfig()[0]
     print('\nConnected on {}'.format(ip))
     self.togglePicoLed()
+    sleep(2)
     return ip
   
   def togglePicoLed(self):

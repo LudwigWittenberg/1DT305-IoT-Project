@@ -23,3 +23,4 @@ Thumbs.db
 # Files
 WifiConfig.py
 MQTTConfig.py
+.env

@@ -8,11 +8,17 @@ from config.DeviceConfig import DeviceConfig
 from lib.System import System
 from lib.Led import Led
 from lib.PIEZO.Piezo import Piezo
+from services.MQTTService import MQTTService
+from services.DataService import DataService
+from lib.DHTSensor import DHTSensor
+from lib.PhotoResistor import PhotoResistor
 # --------------------------------
 
 # ---------- LOAD_CONFIG ---------
 from config.PinConfig import *
 from config.ValueConfig import *
+from config.WifiConfig import WIFI_ENABLE
+from config.MQTTConfig import MQTT_ENABLE
 # --------------------------------
 
 # ------------- PINS -------------
@@ -42,8 +48,23 @@ redLed = Led(redLedPin)
 piezo = Piezo(piezoPin)
 ir = RawIRRecorder(irReciverPin)
 device = DeviceConfig(ir, yellowLed, greenLed)
-temperatureService = TemperatureService(dhtSensorPin, greenLed, redLed, max_temp, irTransmitterPin, piezo)
-system = System(yellowLed, greenLed, redLed, ir, photoPin, piezo, darkness_level)
+dhtSensor = DHTSensor(dhtSensorPin)
+photoSensor = PhotoResistor(photoPin)
+temperatureService = TemperatureService(dhtSensor, greenLed, redLed, max_temp, irTransmitterPin, piezo)
+system = System(yellowLed, greenLed, redLed, ir, photoSensor, piezo, darkness_level)
+mqtt = None
+dataService = None
+# --------------------------------
+
+# ------------- MQTT -------------
+wifiEnable = WIFI_ENABLE or False
+mqttEnable = MQTT_ENABLE or False
+
+
+if wifiEnable and mqttEnable:
+  mqtt = MQTTService()
+  mqtt.connect()
+  dataService = DataService(dhtSensor, photoSensor, system, temperatureService)
 # --------------------------------
 
 # ------------- SETUP -------------
@@ -57,13 +78,20 @@ if not device.is_configured():
 
 # ------------- START -------------
 def run():
-  while True:
-    system.check_system_status()
-    if system.get_system_status():
-      temperatureService.check_temp()
-
-    # stop infinit loop
-    sleep(1)
-
+  try:
+    while True:
+      system.check_system_status()
+      if system.get_system_status():
+        temperatureService.check_temp()
+      
+      # If wifi is enabled we will puplish the data to MQTT
+      if wifiEnable and mqttEnable:
+        data = dataService.get_data()
+        mqtt.publish(data)
+        
+      # stop infinit loop
+      sleep(10)
+  except Exception as e:
+    print("Error in code: ", e)
+    
 run()
-  

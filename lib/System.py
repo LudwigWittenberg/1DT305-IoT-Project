@@ -1,14 +1,13 @@
-from lib.PhotoResistor import PhotoResistor
 from lib.PIEZO.PiezoSongs import start_signal, end_signal
 
 class System:
-  def __init__(self, yellowLed, greenLed, redLed, irReciver, photoPin, piezo, darkness_level):
+  def __init__(self, yellowLed, greenLed, redLed, irReciver, photoSensor, piezo, darkness_level):
     self.system_status = True
     self.yellowLed = yellowLed
     self.greenLed = greenLed
     self.redLed = redLed
     self.ir = irReciver
-    self.photo = PhotoResistor(photoPin)
+    self.photo = photoSensor
     self.piezo = piezo
     self.darkness_level = darkness_level
     

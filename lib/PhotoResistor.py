@@ -2,8 +2,8 @@ from machine import ADC, Pin
 
 # Calculate the darkness in a room
 class PhotoResistor:
-  def __init__(self, photPin: int):
-    self.photo = ADC(Pin(photPin))
+  def __init__(self, photoPin: int):
+    self.photo = ADC(Pin(photoPin))
     self.darkness = 0
   
   # Calculate the darkness level in the room
