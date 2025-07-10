@@ -42,7 +42,9 @@ It has an DHT11 sensor for measuring temperature and humidity, an IR receiver fo
 
 ## Objective
 
-I’ve always found it uncomfortable when a room gets too hot, and I’ve also had a growing interest in IoT technology. That inspired me to take on this project as my first step into building a smart, connected device. The goal of the Smart Climate Control System is to create a temperature-aware system that can automatically adjust the indoor climate based on user-defined preferences. At the same time, it’s designed to operate in an energy-efficient way, making it both convenient and sustainable.
+I’ve always found it uncomfortable when a room gets too hot, and I’ve also had a growing interest in IoT technology. That inspired me to take on this project as my first step into building a smart, connected device. The goal of the Smart Climate Control System is to create a temperature-aware system that can automatically adjust the indoor climate based on user-defined preferences. At the same time, it’s designed to operate in an energy-efficient way, making it both convenient and sustainable. 
+
+I think I will learn more about connecting the code to an hardware and learn more about Python.
 
 ### Course 1DT305 IoT Project
 
@@ -458,7 +460,7 @@ I have used the MQTT protocol to send the data from the Raspberry Pi Pico WH to 
 
 ![alt text](./assets/readme/grafana.png)
 
-Here we can see the temperature and humidity data collected by the DHT11 sensor. Also the current light level. The dashboard is updated in real-time, allowing users to monitor the indoor climate conditions at a glance.
+Here we can see the temperature and humidity data collected by the DHT11 sensor. Also the current light level. The dashboard is updated in real-time, allowing users to monitor the indoor climate conditions at a glance. The data updtades every 15 seconds.
 
 ## Finalizing the Design
 
